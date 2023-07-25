@@ -8,13 +8,16 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { Bar  } from 'react-chartjs-2';
-import { saveAs } from 'file-saver'; 
+import { Bar } from 'react-chartjs-2';
+import { saveAs } from 'file-saver';
 
+// Import the zoom plugin from 'chartjs-plugin-zoom'
 import zoomPlugin from "chartjs-plugin-zoom";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend ,zoomPlugin);
+// Register the necessary components and the zoom plugin with ChartJS
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, zoomPlugin);
 
+// Configure the chart options
 const options: any = {
   elements: {
     bar: {
@@ -33,20 +36,16 @@ const options: any = {
     zoom: {
       zoom: {
         wheel: {
-          enabled: true // SET SCROOL ZOOM TO TRUE
+          enabled: true // Enable zooming with the mouse wheel
         },
-        mode: "xy",
-        speed: 100
+        mode: "xy", // Allow both X and Y axis zooming
+        speed: 100, // Adjust the zoom speed (optional)
       },
       pan: {
-        enabled: true,
-        mode: "xy",
-        speed: 100
-      }
-    },
-    pan: {
-      enabled: true,
-      mode: 'xy',
+        enabled: true, // Enable panning
+        mode: "xy", // Allow both X and Y axis panning
+        speed: 100, // Adjust the panning speed (optional)
+      },
     },
   },
 };
@@ -61,6 +60,7 @@ const Horizontalchart: React.FC = () => {
       backgroundColor: string;
     }[];
   }>({
+    // Adding labels and Datasets 
     labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     datasets: [
       {
@@ -73,13 +73,13 @@ const Horizontalchart: React.FC = () => {
   });
 
   useEffect(() => {
+    // function to call the API and getting the data
     const fetchData = async () => {
       const url = 'https://nodejs-task-be.vercel.app/v1/data';
       const dataSet1: number[] = [];
       try {
         const response = await fetch(url);
         const res = await response.json();
-        console.log('API data', res);
         for (const val of res) {
           dataSet1.push(val.value);
         }
@@ -102,6 +102,7 @@ const Horizontalchart: React.FC = () => {
     fetchData();
   }, []);
 
+// Function to download CSV File
   const handleExportCSV = () => {
     const csvContent = [
       ['Day', 'Value'],
@@ -109,6 +110,7 @@ const Horizontalchart: React.FC = () => {
     ].map(row => row.join(',')).join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+    // setting the name of the file to be downloaded as chart_data.csv
     saveAs(blob, 'chart_data.csv');
   };
 
@@ -134,7 +136,3 @@ const Horizontalchart: React.FC = () => {
 };
 
 export default Horizontalchart;
-
-
-
-
