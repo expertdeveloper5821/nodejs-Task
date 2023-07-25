@@ -1,0 +1,13 @@
+.container{
+    width: 80%;
+    height: 90%;
+}
+.btn{
+    padding: 8px 16px;
+    background: white;
+    color: black;
+    border: 2px solid green;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}

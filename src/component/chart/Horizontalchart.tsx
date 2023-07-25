@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './HorozontalChart.css'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,8 +12,10 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { saveAs } from 'file-saver';
 
+
 // Import the zoom plugin from 'chartjs-plugin-zoom'
 import zoomPlugin from "chartjs-plugin-zoom";
+import { environmentConfig } from '../../config/environmentConfig';
 
 // Register the necessary components and the zoom plugin with ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, zoomPlugin);
@@ -51,7 +54,7 @@ const options: any = {
 };
 
 const Horizontalchart: React.FC = () => {
-  const [data, setData] = useState<{
+  const [ data, setData] = useState<{
     labels: string[];
     datasets: {
       label: string;
@@ -75,7 +78,9 @@ const Horizontalchart: React.FC = () => {
   useEffect(() => {
     // function to call the API and getting the data
     const fetchData = async () => {
-      const url = 'https://nodejs-task-be.vercel.app/v1/data';
+      // const baseUrl: string = (process.env.REACT_APP_BASE_URL as string);
+      const endPoint = 'v1/data'
+      const url = `${environmentConfig.REACT_APP_API_URL}/${endPoint}`;
       const dataSet1: number[] = [];
       try {
         const response = await fetch(url);
@@ -115,20 +120,11 @@ const Horizontalchart: React.FC = () => {
   };
 
   return (
-    <div style={{ width: '80%', height: '90%' }}>
+    <div  className='container'>
       <Bar data={data} options={options} />
       <button
         onClick={handleExportCSV}
-        style={{
-          padding: '8px 16px',
-          background: 'white',
-          color: 'black',
-          border: '2px solid green',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginTop: '20px',
-        }}
-      >
+        className='btn'>
         Export CSV
       </button>
     </div>
@@ -136,3 +132,6 @@ const Horizontalchart: React.FC = () => {
 };
 
 export default Horizontalchart;
+
+
+
